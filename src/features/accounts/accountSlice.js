@@ -144,15 +144,20 @@ export const {
 } = accountSlice.actions;
 
 export function depositAsync(amount, currency) {
-  if (currency === "USD") {
-    dispatch(deposit(amount)); // ✅ triggers prepare()
-    return;
-  }
+  // if (currency === "USD") {
+  //   dispatch(deposit(amount)); // ✅ triggers prepare()
+  //   return;
+  // }
 
   return async function (dispatch) {
-    dispatch({ type: "account/startLoading" });
+    dispatch(startLoading());
 
     try {
+      if (currency === "USD") {
+        dispatch(deposit(amount)); // ✅ triggers prepare()
+        return;
+      }
+
       const res = await fetch(
         "https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_rI6ZC3g09V5pyWlSwq6edPxjHrlGT1KNZ7dV4zc3",
       );

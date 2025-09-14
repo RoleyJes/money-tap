@@ -5,6 +5,7 @@ import { withdraw } from "./accountSlice";
 import Alert from "../../ui/Alert";
 import useTimedMessage from "../../hooks/useTimedMessage";
 import LoadingSpinner from "../../ui/LoadingSpinner";
+import { formatCurrency } from "../../utils/helpers";
 
 function Withdraw() {
   const [withdrawAmt, setWithdrawAmt] = useState("");
@@ -28,7 +29,9 @@ function Withdraw() {
     setTimeout(() => {
       dispatch(withdraw(withdrawAmt));
       dispatch({ type: "account/stopLoading" });
-      setSuccess(`You've withdrawn $${withdrawAmt} successfully`);
+      setSuccess(
+        `You've withdrawn ${formatCurrency(withdrawAmt)} successfully`,
+      );
       setWithdrawAmt("");
     }, 3000);
   }

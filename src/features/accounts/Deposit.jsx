@@ -28,7 +28,7 @@ function Deposit() {
         setSuccess(`You've deposited $${depositAmt} successfully.`);
         setDepositAmt("");
       } else {
-        await dispatch(depositAsync(depositAmt, currency));
+        dispatch(depositAsync(depositAmt, currency));
         setSuccess(`You've deposited ${depositAmt} ${currency} successfully.`);
         setDepositAmt("");
       }
