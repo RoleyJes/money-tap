@@ -2,12 +2,15 @@ import { useState } from "react";
 import LoginForm from "./features/customer/Login";
 import Sidebar from "./ui/Sidebar";
 import MainDashboard from "./ui/MainDashboard";
-import MobileNav from "./ui/MobileNav";
+import { useDispatch } from "react-redux";
+import { logOut } from "./features/accounts/accountSlice";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showMobileNav, setShowMobileNav] = useState(false);
   const [activeAction, setActiveAction] = useState("deposit"); // "deposit", "withdraw", "request loan", "repay loan"
+
+  const dispatch = useDispatch();
 
   function handleMobileMenu() {
     setShowMobileNav(true);
@@ -22,6 +25,14 @@ export default function App() {
     setShowMobileNav(false);
   }
 
+  function handleLogout() {
+    setIsAuthenticated(false);
+    setActiveAction("deposit");
+    setShowMobileNav(false);
+
+    dispatch(logOut());
+  }
+
   return (
     <div className="flex min-h-screen bg-gray-100">
       {!isAuthenticated ? (
@@ -29,12 +40,9 @@ export default function App() {
           <LoginForm onLogin={() => setIsAuthenticated(true)} />
         </div>
       ) : (
-        <div
-          className={`w-full md:grid md:grid-cols-[256px_1fr]`}
-          // className={`flex w-full flex-col md:grid md:grid-cols-[256px_1fr]`}
-        >
+        <div className={`w-full md:grid md:grid-cols-[256px_1fr]`}>
           <Sidebar
-            onLogout={() => setIsAuthenticated(false)}
+            onLogout={handleLogout}
             activeAction={activeAction}
             setActiveAction={setActiveAction}
             showMobileNav={showMobileNav}

@@ -1,6 +1,6 @@
 import { LuDisc2, LuLoader, LuLoaderCircle } from "react-icons/lu";
 
-function LoadingSpinner({ text }) {
+function LoadingSpinner() {
   return (
     <div className="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-white/70">
       <LuLoaderCircle className="size-10 animate-spin text-slate-600" />

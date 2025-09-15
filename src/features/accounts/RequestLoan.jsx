@@ -2,7 +2,7 @@ import { useState } from "react";
 import ActionForm from "./ActionForm";
 import { useDispatch, useSelector } from "react-redux";
 import ErrorInput from "../../ui/ErrorInput";
-import { requestLoan } from "./accountSlice";
+import { requestLoan, startLoading, stopLoading } from "./accountSlice";
 import Alert from "../../ui/Alert";
 import useTimedMessage from "../../hooks/useTimedMessage";
 import { formatCurrency } from "../../utils/helpers";
@@ -42,15 +42,15 @@ function RequestLoan() {
 
     if (!valid) return;
 
-    dispatch({ type: "account/startLoading" });
+    dispatch(startLoading());
 
     setTimeout(() => {
       dispatch(requestLoan(Number(loanAmt), loanPurpose));
-      dispatch({ type: "account/stopLoading" });
+      dispatch(stopLoading());
       setSuccess("Loan request granted successfully!");
       setLoanAmt("");
       setLoanPurpose("");
-    }, 3000);
+    }, 2000);
   }
 
   return (

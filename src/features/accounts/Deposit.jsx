@@ -1,17 +1,31 @@
 import { useDispatch, useSelector } from "react-redux";
 import ActionForm from "./ActionForm";
-import { deposit, depositAsync } from "./accountSlice";
+import {
+  deposit,
+  depositAsync,
+  startLoading,
+  stopLoading,
+} from "./accountSlice";
 import Alert from "../../ui/Alert";
 import useTimedMessage from "../../hooks/useTimedMessage";
 import { useState } from "react";
 import ErrorInput from "../../ui/ErrorInput";
 import LoadingSpinner from "../../ui/LoadingSpinner";
+import { formatCurrency } from "../../utils/helpers";
+
+const localeMap = {
+  USD: "en-US",
+  EUR: "de-DE",
+  GBP: "en-GB",
+};
 
 function Deposit() {
   const [depositAmt, setDepositAmt] = useState("");
   const [currency, setCurrency] = useState("USD");
   const [success, setSuccess] = useTimedMessage();
   const [error, setError] = useState("");
+
+  const localeCode = localeMap[currency];
 
   const { isLoading, globalError } = useSelector((store) => store.account);
   const dispatch = useDispatch();
@@ -24,12 +38,24 @@ function Deposit() {
 
     try {
       if (currency === "USD") {
-        dispatch(deposit(depositAmt)); // ✅ send raw number
-        setSuccess(`You've deposited $${depositAmt} successfully.`);
-        setDepositAmt("");
+        dispatch(startLoading());
+
+        setTimeout(() => {
+          dispatch(deposit(depositAmt));
+          setSuccess(
+            `You've deposited ${formatCurrency(depositAmt)} successfully.`,
+          );
+          setDepositAmt("");
+          dispatch(stopLoading());
+        }, 2000);
       } else {
-        await dispatch(depositAsync(depositAmt, currency));
-        setSuccess(`You've deposited ${depositAmt} ${currency} successfully.`);
+        const { data, convertedAmt } = await dispatch(
+          depositAsync(depositAmt, currency),
+        );
+
+        setSuccess(
+          `You've deposited ${formatCurrency(depositAmt, localeCode, currency)} (${formatCurrency(convertedAmt)}) at an exchange rate of ${data[currency].toFixed(4)}.`,
+        );
         setDepositAmt("");
       }
     } catch (err) {

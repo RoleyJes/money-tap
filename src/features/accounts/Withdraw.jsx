@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ActionForm from "./ActionForm";
 import { useDispatch, useSelector } from "react-redux";
-import { withdraw } from "./accountSlice";
+import { startLoading, stopLoading, withdraw } from "./accountSlice";
 import Alert from "../../ui/Alert";
 import useTimedMessage from "../../hooks/useTimedMessage";
 import LoadingSpinner from "../../ui/LoadingSpinner";
@@ -24,16 +24,16 @@ function Withdraw() {
     if (withdrawAmt < 0)
       return setError("Your withdraw amount can't be below zero");
 
-    dispatch({ type: "account/startLoading" });
+    dispatch(startLoading());
 
     setTimeout(() => {
       dispatch(withdraw(withdrawAmt));
-      dispatch({ type: "account/stopLoading" });
+      dispatch(stopLoading());
       setSuccess(
         `You've withdrawn ${formatCurrency(withdrawAmt)} successfully`,
       );
       setWithdrawAmt("");
-    }, 3000);
+    }, 2000);
   }
 
   return (

@@ -2,10 +2,14 @@ export function capitalizeFirstLetter(word) {
   return word.split("")[0].toUpperCase() + word.slice(1);
 }
 
-export function formatCurrency(value) {
-  return new Intl.NumberFormat("en-US", {
+export function formatCurrency(
+  value,
+  localeCode = "en-US",
+  currencyCode = "USD",
+) {
+  return new Intl.NumberFormat(localeCode, {
     style: "currency",
-    currency: "USD",
+    currency: currencyCode,
   }).format(value);
 }
 // "https://api.exchangerate-api.com/v4/latest/" + currency + "?symbols=USD";

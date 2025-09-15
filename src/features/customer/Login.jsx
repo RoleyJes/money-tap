@@ -20,7 +20,10 @@ function LoginForm({ onLogin }) {
 
   return (
     <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-xl">
-      <h1 className="mb-6 text-center text-2xl font-bold">Bank App Login</h1>
+      <h1 className="mb-6 text-center text-2xl font-bold">MoneyTap Login</h1>
+      <p className="textsm mb-4 text-gray-600">
+        Unlock your financial freedom—one click away!
+      </p>
       <form className="space-y-4" onSubmit={handleLogin}>
         <div className="pb-3">
           <label className="mb-1 block text-sm font-medium">Username</label>

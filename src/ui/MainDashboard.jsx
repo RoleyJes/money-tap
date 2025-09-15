@@ -24,7 +24,7 @@ function MainDashboard({ activeAction, handleMobileMenu }) {
           </p>
         </div>
 
-        <BalanceDisplay />
+        <BalanceDisplay activeAction={activeAction} />
 
         {/* Conditionally render forms */}
         {activeAction === "deposit" && <Deposit />}

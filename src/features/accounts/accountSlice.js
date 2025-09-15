@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { API_URL } from "../../services/apiExchange";
 
 const initialState = {
   balance: 5000,
@@ -131,6 +132,10 @@ const accountSlice = createSlice({
         state.loanPurpose = "";
       },
     },
+
+    logOut() {
+      return initialState;
+    },
   },
 });
 
@@ -141,6 +146,7 @@ export const {
   requestLoan,
   repayLoan,
   deposit,
+  logOut,
 } = accountSlice.actions;
 
 export function depositAsync(amount, currency) {
@@ -158,9 +164,7 @@ export function depositAsync(amount, currency) {
         return;
       }
 
-      const res = await fetch(
-        "https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_rI6ZC3g09V5pyWlSwq6edPxjHrlGT1KNZ7dV4zc3",
-      );
+      const res = await fetch(API_URL);
 
       if (!res.ok) {
         dispatch({ type: "account/startGlobalError" });
@@ -170,10 +174,12 @@ export function depositAsync(amount, currency) {
       const { data } = await res.json();
 
       const convertedAmt = Number((amount / data[currency]).toFixed(2));
-      console.log(data, convertedAmt);
+      // console.log(data, convertedAmt);
 
       dispatch({ type: "account/stopGlobalError" });
       dispatch(deposit(convertedAmt)); // ✅ triggers prepare()
+
+      return { data, convertedAmt };
     } catch (err) {
       console.error(`Something went wrong: ${err.message}`);
       dispatch({ type: "account/stopLoading" });

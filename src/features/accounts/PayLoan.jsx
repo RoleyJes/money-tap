@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import ActionForm from "./ActionForm";
-import { repayLoan } from "./accountSlice";
+import { repayLoan, startLoading, stopLoading } from "./accountSlice";
 import Alert from "../../ui/Alert";
 import useTimedMessage from "../../hooks/useTimedMessage";
 import { formatCurrency } from "../../utils/helpers";
@@ -20,13 +20,13 @@ function PayLoan() {
 
     // if (loan === 0) return setError("You don't have any loan to repay");
 
-    dispatch({ type: "account/startLoading" });
+    dispatch(startLoading());
 
     setTimeout(() => {
       dispatch(repayLoan());
-      dispatch({ type: "account/stopLoading" });
+      dispatch(stopLoading());
       setSuccess("Loan repaid successfully!");
-    }, 3000);
+    }, 2000);
   }
 
   return (
