@@ -73,7 +73,7 @@ function LoginForm() {
 
         <button
           type="submit"
-          className={`mt-6 w-full cursor-pointer rounded-xl bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 py-3 font-semibold text-white shadow-lg shadow-green-500/30 transition-all duration-300 hover:from-green-600 hover:to-teal-600 active:scale-[0.97] disabled:opacity-60`}
+          className={`mt-6 w-full cursor-pointer rounded-xl bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 py-3 font-semibold text-white shadow-lg shadow-green-500/30 transition-all duration-300 hover:from-green-600 hover:to-teal-600 active:scale-[0.97] disabled:cursor-not-allowed disabled:bg-gray-400 disabled:bg-none disabled:text-gray-600 disabled:opacity-60`}
           disabled={isLoading}
         >
           {/* <button
