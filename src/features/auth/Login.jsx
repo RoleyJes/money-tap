@@ -43,7 +43,9 @@ function LoginForm() {
 
   return (
     <div className="shadowxl w-full max-w-sm rounded-2xl bg-white/70 p-8 backdrop-blur-sm">
-      <h1 className="mb-6 text-center text-2xl font-bold">MoneyTap Login</h1>
+      <h1 className="mb-6 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-center text-4xl font-extrabold text-transparent">
+        MoneyTap
+      </h1>
       <p className="mb-9 text-black">
         Unlock your financial freedom—one click away!
       </p>
@@ -71,13 +73,18 @@ function LoginForm() {
 
         <button
           type="submit"
-          className={`w-full cursor-pointer rounded-lg bg-blue-600 py-2 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:text-gray-600`}
+          className={`mt-6 w-full cursor-pointer rounded-xl bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 py-3 font-semibold text-white shadow-lg shadow-green-500/30 transition-all duration-300 hover:from-green-600 hover:to-teal-600 active:scale-[0.97] disabled:opacity-60`}
           disabled={isLoading}
         >
+          {/* <button
+          type="submit"
+          className={`w-full cursor-pointer rounded-lg bg-green-600 py-2 text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:text-gray-600`}
+          disabled={isLoading}
+        > */}
           {isLoading ? (
             <span className="flex items-center justify-center gap-2">
               <LuLoaderCircle className="size-5 animate-spin text-gray-600" />
-              Submitting...
+              Logging in...
             </span>
           ) : (
             <span>Login</span>
