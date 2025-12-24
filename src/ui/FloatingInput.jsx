@@ -23,7 +23,7 @@ function FloatingInput({
 
       <label
         htmlFor={id}
-        className={`pointer-events-none absolute left-0 transition-all duration-200 ${isFocused || value ? "-top-7 text-gray-700" : "-top-2 text-black/50"}`}
+        className={`pointer-events-none absolute left-0 transition-all duration-200 ${isFocused || value ? "-top-7 text-black/80" : "-top-2 text-black/50"}`}
       >
         {label}
       </label>

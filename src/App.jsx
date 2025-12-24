@@ -50,7 +50,9 @@ export default function App() {
   }, [dispatch]);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div
+      className={`flex min-h-screen transition-all ${isAuthenticated ? "bg-gray-100" : "bg-black/70 bg-[url(/dollarBg.webp)] bg-cover bg-center bg-no-repeat bg-blend-multiply"}`}
+    >
       {!isAuthenticated ? (
         <div className="flex flex-1 items-center justify-center p-4">
           <LoginForm />
