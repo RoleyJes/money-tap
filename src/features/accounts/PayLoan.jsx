@@ -1,15 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import ActionForm from "./ActionForm";
 import { repayLoan, startLoading, stopLoading } from "./accountSlice";
-import Alert from "../../ui/Alert";
-import useTimedMessage from "../../hooks/useTimedMessage";
 import { formatCurrency } from "../../utils/helpers";
 import LoadingSpinner from "../../ui/LoadingSpinner";
+import toast from "react-hot-toast";
 
 function PayLoan() {
-  const [success, setSuccess] = useTimedMessage();
-  // const [error, setError] = useTimedMessage();
-
   const { loan, loanPurpose, isLoading } = useSelector(
     (store) => store.account,
   );
@@ -18,22 +14,17 @@ function PayLoan() {
   function handleClick(e) {
     e.preventDefault();
 
-    // if (loan === 0) return setError("You don't have any loan to repay");
-
     dispatch(startLoading());
 
     setTimeout(() => {
       dispatch(repayLoan());
       dispatch(stopLoading());
-      setSuccess("Loan repaid successfully!");
+      toast.success("Loan repaid successfully!");
     }, 2000);
   }
 
   return (
     <>
-      {success && <Alert type="Success" message={success} />}
-      {/* {error && <Alert type="Error" message={error} />} */}
-
       <div className="relative">
         {/* Overlay */}
         {isLoading && <LoadingSpinner />}

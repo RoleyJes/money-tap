@@ -3,17 +3,15 @@ import ActionForm from "./ActionForm";
 import { useDispatch, useSelector } from "react-redux";
 import ErrorInput from "../../ui/ErrorInput";
 import { requestLoan, startLoading, stopLoading } from "./accountSlice";
-import Alert from "../../ui/Alert";
-import useTimedMessage from "../../hooks/useTimedMessage";
-import { formatCurrency } from "../../utils/helpers";
+import { formatCurrency, formatNumber } from "../../utils/helpers";
 import LoadingSpinner from "../../ui/LoadingSpinner";
+import toast from "react-hot-toast";
 
 function RequestLoan() {
   const [loanAmt, setLoanAmt] = useState("");
   const [loanPurpose, setLoanPurpose] = useState("");
   const [errorAmt, setErrorAmt] = useState("");
   const [errorPurpose, setErrorPurpose] = useState("");
-  const [success, setSuccess] = useTimedMessage();
 
   const {
     loan,
@@ -27,7 +25,6 @@ function RequestLoan() {
   function handleClick(e) {
     e.preventDefault();
     let valid = true;
-    setSuccess("");
     setErrorAmt("");
     setErrorPurpose(false);
 
@@ -36,7 +33,7 @@ function RequestLoan() {
       valid = false;
     }
     if (loanAmt === "" || loanAmt >= balance) {
-      setErrorAmt("Amount must be less than your balance and not empty.");
+      setErrorAmt("Amount must be less than your balance, and not empty.");
       valid = false;
     }
 
@@ -47,7 +44,7 @@ function RequestLoan() {
     setTimeout(() => {
       dispatch(requestLoan(Number(loanAmt), loanPurpose));
       dispatch(stopLoading());
-      setSuccess("Loan request granted successfully!");
+      toast.success("Loan request granted successfully!");
       setLoanAmt("");
       setLoanPurpose("");
     }, 2000);
@@ -55,8 +52,6 @@ function RequestLoan() {
 
   return (
     <>
-      {success && <Alert type="Success" message={success} />}
-
       <div className="relative">
         {/* Overlay */}
         {isLoading && <LoadingSpinner />}
@@ -70,9 +65,11 @@ function RequestLoan() {
             <div className="flex flex-1 flex-col gap-3">
               <div>
                 <input
-                  value={loanAmt}
-                  onChange={(e) => setLoanAmt(e.target.value)}
-                  type="number"
+                  value={formatNumber(loanAmt)}
+                  onChange={(e) =>
+                    setLoanAmt(Number(e.target.value.replace(/,/g, "")) || 0)
+                  }
+                  type="text"
                   required
                   placeholder="Enter amount"
                   className="w-full rounded-lg border px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:outline-none"

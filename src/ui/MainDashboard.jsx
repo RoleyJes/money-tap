@@ -7,10 +7,11 @@ import TransactionItem from "../features/accounts/TransactionItem";
 import Withdraw from "../features/accounts/Withdraw";
 import { LuMenu } from "react-icons/lu";
 import { capitalizeFirstLetter } from "../utils/helpers";
+import { Toaster } from "react-hot-toast";
 
 function MainDashboard({ activeAction, handleMobileMenu }) {
   const { transactionHistory } = useSelector((store) => store.account);
-  const { username } = useSelector((store) => store.customer);
+  const user = useSelector((state) => state.auth.user?.username);
 
   return (
     <main>
@@ -20,7 +21,7 @@ function MainDashboard({ activeAction, handleMobileMenu }) {
             <LuMenu className="size-6 md:hidden" />
           </button>
           <p className="text-end text-lg font-bold sm:text-start sm:text-2xl md:flex-1 md:text-3xl lg:text-4xl">
-            Welcome to Your Dashboard, {capitalizeFirstLetter(username)}
+            Welcome to Your Dashboard, {capitalizeFirstLetter(user)}
           </p>
         </div>
 
@@ -36,7 +37,7 @@ function MainDashboard({ activeAction, handleMobileMenu }) {
         {transactionHistory.length > 0 ? (
           <div>
             <h3 className="mb-3 text-lg font-semibold">Transaction History</h3>
-            <ul className="max-h-[400px] space-y-2 overflow-y-auto rounded-xl bg-white p-4 shadow">
+            <ul className="max-h-[400px] space-y-2 overflow-y-auto rounded-xl bg-white px-8 py-6 shadow-lg">
               {transactionHistory.map((tx, index) => (
                 <TransactionItem key={index} {...tx} />
               ))}
@@ -46,6 +47,8 @@ function MainDashboard({ activeAction, handleMobileMenu }) {
           <p className="text-gray-500">No transaction history available.</p>
         )}
       </div>
+
+      <Toaster />
     </main>
   );
 }

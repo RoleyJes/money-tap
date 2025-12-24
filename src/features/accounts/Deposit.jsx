@@ -7,11 +7,12 @@ import {
   stopLoading,
 } from "./accountSlice";
 import Alert from "../../ui/Alert";
-import useTimedMessage from "../../hooks/useTimedMessage";
+
 import { useState } from "react";
 import ErrorInput from "../../ui/ErrorInput";
 import LoadingSpinner from "../../ui/LoadingSpinner";
-import { formatCurrency } from "../../utils/helpers";
+import { formatCurrency, formatNumber } from "../../utils/helpers";
+import toast from "react-hot-toast";
 
 const localeMap = {
   USD: "en-US",
@@ -22,7 +23,7 @@ const localeMap = {
 function Deposit() {
   const [depositAmt, setDepositAmt] = useState("");
   const [currency, setCurrency] = useState("USD");
-  const [success, setSuccess] = useTimedMessage();
+  // const [success, setSuccess] = useTimedMessage();
   const [error, setError] = useState("");
 
   const localeCode = localeMap[currency];
@@ -33,8 +34,8 @@ function Deposit() {
   async function handleClick(e) {
     e.preventDefault();
     setError("");
-    if (!depositAmt) return setError("Enter a deposit amount");
-    if (depositAmt < 0) return setError("Your deposit can't be below zero");
+    if (!depositAmt) return toast.error("Enter a deposit amount");
+    if (depositAmt < 0) return toast.error("Your deposit can't be below zero");
 
     try {
       if (currency === "USD") {
@@ -42,7 +43,7 @@ function Deposit() {
 
         setTimeout(() => {
           dispatch(deposit(depositAmt));
-          setSuccess(
+          toast.success(
             `You've deposited ${formatCurrency(depositAmt)} successfully.`,
           );
           setDepositAmt("");
@@ -53,21 +54,19 @@ function Deposit() {
           depositAsync(depositAmt, currency),
         );
 
-        setSuccess(
+        toast.success(
           `You've deposited ${formatCurrency(depositAmt, localeCode, currency)} (${formatCurrency(convertedAmt)}) at an exchange rate of ${data[currency].toFixed(4)}.`,
         );
         setDepositAmt("");
       }
     } catch (err) {
-      setError(err.message || "Something went wrong. Please try again.");
+      toast.error(err.message || "Something went wrong. Please try again.");
     }
   }
 
   return (
     <>
-      {success && <Alert type="Success" message={success} />}
-      {error && <Alert type="Error" message={error} />}
-      {globalError && <Alert type="Error" message={error} />}
+      {globalError && toast.error(error)}
       <div className="relative">
         {/* Overlay */}
         {isLoading && <LoadingSpinner />}
@@ -81,9 +80,11 @@ function Deposit() {
             <div>
               <label className="mb-1 block font-medium">Amount</label>
               <input
-                type="number"
-                value={depositAmt}
-                onChange={(e) => setDepositAmt(+e.target.value)}
+                type="text"
+                value={formatNumber(depositAmt)}
+                onChange={(e) =>
+                  setDepositAmt(Number(e.target.value.replace(/,/g, "")) || 0)
+                }
                 className="w-full rounded-lg border px-3 py-2 focus:ring-2 focus:ring-green-500 focus:outline-none"
                 placeholder="Enter amount"
               />

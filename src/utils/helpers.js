@@ -14,6 +14,16 @@ export function formatCurrency(
 }
 // "https://api.exchangerate-api.com/v4/latest/" + currency + "?symbols=USD";
 
-// const data = await res.json();
-// const rate = data.rates.USD;
-// const convertedAmount = Math.round(amount * rate * 100) / 100;
+export function formatNumber(value) {
+  return value.toLocaleString("en-US");
+}
+
+export function saveAccountToStorage(account, username) {
+  if (!username) return;
+  localStorage.setItem(`moneyTapAccount_${username}`, JSON.stringify(account));
+}
+
+export function getAccountFromStorage(username) {
+  if (!username) return null;
+  return JSON.parse(localStorage.getItem(`moneyTapAccount_${username}`));
+}
